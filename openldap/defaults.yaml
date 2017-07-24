@@ -9,14 +9,15 @@ general:
   clientpkgs: 
     - openldap-clients
 client:
-  url: ldap://localhost
+  uri: ldap://localhost
+  base: "dc=example,dc=com"
 server:
   enabled: False
   protocols:
     ldap: True
     ldaps: False
   db:
-    configdn: olcDatabase={2}hdb,cn=config
+    configdn: "olcDatabase={2}hdb,cn=config"
     access:
       - to attrs=userPassword,shadowLastChange by self write by anonymous auth by * none
       - to dn.base="" by * read
@@ -25,11 +26,11 @@ server:
     - core
     - cosine
     - nis
-    - inetOrgPerson
+    - inetorgperson
   domain:
-    suffix: dc=example,dc=com
-    rootdn: cn=admin,dc=example,dc=com
-    rootpw: {CLEARTEXT}example
+    suffix: "dc=example,dc=com"
+    rootdn: "cn=admin,dc=example,dc=com"
+    rootpw: "{CLEARTEXT}example"
 #      objects:
 #        groups:
 #          dn: cn=groups,dc=example,dc=com

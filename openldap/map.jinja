@@ -1,4 +1,4 @@
-{% import_yaml 'defaults.yaml' as defaults %}
+{% import_yaml 'openldap/defaults.yaml' as defaults %}
 
 {% set openldap = salt['grains.filter_by']({
     'Debian': {
@@ -21,8 +21,5 @@
         'db': {
             'configdn': 'dn: olcDatabase={1}mdb,cn=config',
         },
-    },
-    'RedHat': {
-        'one': 'peter',
     },
 }, merge=salt['pillar.get']('openldap:lookup', default=defaults, merge=True)) %}
