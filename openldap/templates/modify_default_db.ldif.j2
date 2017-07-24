@@ -1,26 +1,16 @@
 {% from 'openldap/map.jinja' import openldap with context %}
-dn: {{ openldap.server.defaultdn }}
+dn: {{ openldap.server.db.configdn }}
 changetype: modify
 replace: olcSuffix
-olcSuffix: {{ openldap.domain.suffix }}
+olcSuffix: {{ openldap.server.domain.suffix }}
 
-dn: {{ openldap.server.defaultdn }}
+dn: {{ openldap.server.db.configdn }}
 changetype: modify
 replace: olcRootDN
-olcRootDN: {{ openldap.domain.rootdn }}
+olcRootDN: {{ openldap.server.domain.rootdn }}
 
-dn: {{ openldap.server.defaultdn }}
+dn: {{ openldap.server.db.configdn }}
 changetype: modify
 replace: olcRootPW
-olcRootDN: {{ openldap.domain.rootpw }}
-
-dn: {{ openldap.server.defaultdn }}
-delete: olcAccess
-
-{% for access in openldap.db.access %}
-dn: {{ openldap.server.defaultdn }}
-changetype: modify
-add: olcAccess
-olcAccess: {{ access }}
-{% endfor %}
+olcRootPW: {{ openldap.server.domain.rootpw }}
 
