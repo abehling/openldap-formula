@@ -1,0 +1,38 @@
+openldap:
+  lookup:
+    client:
+      url: ldap://localhost
+    server:
+      protocols:
+        ldap: True
+        ldaps: False
+      db:
+        type: mdb
+      schema:
+        - core
+        - cosine
+        - inetOrgPerson
+      domains:
+        dc=example,dc=com:
+          rootdn: cn=admin,dc=example,dc=com
+          rootpw: {CLEARTEXT}example
+          access:
+            - to attrs=userPassword,shadowLastChange by self write by anonymous auth by * none
+            - to dn.base="" by * read
+            - to * by * read
+          objects:
+            groups:
+              dn: cn=groups,dc=example,dc=com
+              objecttype:
+                - simpleSecurityObject
+              attrs:
+                attribute1: value
+            people:
+              dn: cn=people,dc=example,dc=com
+              objecttype:
+                - simpleSecurityObject
+              attrs:
+                attribute1: value
+      certificate:
+        certfile: /etc/openldap/cert/cert.pem
+        keyfile: /etc/openldap/cert/cert-key.pem
