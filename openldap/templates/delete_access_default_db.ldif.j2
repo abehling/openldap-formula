@@ -1,0 +1,4 @@
+{% from 'openldap/map.jinja' import openldap with context %}
+dn: {{ openldap.server.db.configdn }}
+delete: olcAccess
+

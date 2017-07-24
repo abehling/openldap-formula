@@ -1,0 +1,9 @@
+{%- from 'openldap/map.jinja' import openldap with context -%}
+
+{%- for access in openldap.server.db.access %}
+dn: {{ openldap.server.db.configdn }}
+changetype: modify
+add: olcAccess
+olcAccess: {{ access }}
+{% endfor -%}
+
