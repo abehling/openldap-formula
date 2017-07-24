@@ -1,0 +1,11 @@
+{% from 'openldap/map.jinja' import openldap with context %}
+dn: olcDatabase=hdb,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcHdbConfig
+olcDatabase: hdb
+olcDbDirectory: /var/lib/ldap
+olcDbIndex: objectClass eq,pres
+olcDbIndex: ou,cn,mail,surname,givenname eq,pres,sub
+olcSuffix: dc=gigatv,dc=vodafone,dc=com
+olcRootDN: cn=root,dc=gigatv,dc=vodafone,dc=com
+

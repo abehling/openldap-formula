@@ -1,0 +1,28 @@
+{% import_yaml 'defaults.yaml' as defaults %}
+
+{% set openldap = salt['grains.filter_by']({
+    'Debian': {
+        'general': {
+            'configdir': '/etc/ldap',
+            'ldifdir': '/etc/ldap/ldif',
+            'clientpkgs': [
+                'ldap-utils',
+            ],
+            'serverpkgs': [
+                'slapd',
+            ],
+        },
+        'server': {
+            'certificate': {
+                'certfile': '/etc/ldap/cert/cert.pem',
+                'keyfile': '/etc/ldap/cert/cert-key.pem',
+            },
+        },
+        'db': {
+            'configdn': 'dn: olcDatabase={1}mdb,cn=config',
+        },
+    },
+    'RedHat': {
+        'one': 'peter',
+    },
+}, merge=salt['pillar.get']('openldap:lookup', default=defaults, merge=True)) %}

@@ -1,0 +1,10 @@
+{% from 'openldap/map.jinja' import openldap with context %}
+dn: cn=config
+changetype: modify
+replace: olcTLSCertificateFile
+olcTLSCertificateFile: {{ openldap.server.certificate.certfile }}
+
+dn: cn=config
+changetype: modify
+replace: olcTLSCertificateKeyFile
+olcTLSCertificateKeyFile: {{ openldap.server.certificate.keyfile }}
