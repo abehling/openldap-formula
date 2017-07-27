@@ -47,14 +47,48 @@ file-add-access-default-db:
 delete-access-default-db:
   cmd.wait:
     - name: ldapmodify -Y EXTERNAL -H ldapi:/// -f {{ openldap.general.ldifdir }}/delete_access_default_db.ldif
+    - require:
+      - file: file-delete-access-default-db
     - watch:
       - file: file-add-access-default-db
+    - onlyif: ldapsearch -Y EXTERNAL -H ldapi:/// -LLL -b "{{ openldap.server.db.configdn }}" 2>/dev/null | grep -q olcAccess
 
 add-access-default-db:
-  cmd.wait:
+  cmd.run:
     - name: ldapmodify -Y EXTERNAL -H ldapi:/// -f {{ openldap.general.ldifdir }}/add_access_default_db.ldif
-    - watch:
-      - cmd: delete-access-default-db
+    - require:
+      - file: file-add-access-default-db
+    - unless: ldapsearch -Y EXTERNAL -H ldapi:/// -LLL -b "{{ openldap.server.db.configdn }}" 2>/dev/null | grep -q olcAccess
+
+file-add-basedn-object:
+  file.managed:
+    - name: {{ openldap.general.ldifdir }}/add_basedn_object.ldif
+    - source: salt://openldap/templates/add_basedn_object.ldif.j2
+    - template: jinja
+    - require:
+      - file: ldif-config-dir
+
+file-add-manager-object:
+  file.managed:
+    - name: {{ openldap.general.ldifdir }}/add_manager_object.ldif
+    - source: salt://openldap/templates/add_manager_object.ldif.j2
+    - template: jinja
+    - require:
+      - file: ldif-config-dir
+
+add-basedn-object:
+  cmd.run:
+    - name: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap.general.ldifdir }}/add_basedn_object.ldif
+    - unless: ldapsearch -Y EXTERNAL -H ldapi:/// -LLL -b "{{ openldap.server.domain.suffix }}" dn 2>/dev/null | grep -q "{{ openldap.server.domain.suffix }}"
+    - require:
+      - file: file-add-basedn-object
+
+add-manager-object:
+  cmd.run:
+    - name: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap.general.ldifdir }}/add_manager_object.ldif
+    - unless: ldapsearch -Y EXTERNAL -H ldapi:/// -LLL -b "{{ openldap.server.domain.rootdn }}" dn 2>/dev/null | grep -q "{{ openldap.server.domain.rootdn }}"
+    - require:
+      - file: file-add-manager-object
 
 {% if openldap.server.protocols.ldaps %}
 

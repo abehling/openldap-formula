@@ -1,0 +1,8 @@
+{%- from 'openldap/map.jinja' import openldap with context -%}
+{%- set rootdncn = openldap.server.domain.rootdn.split(',')[0] -%}
+{%- set cn = rootdncn.split('=')[1] -%}
+
+dn: {{ openldap.server.domain.rootdn }}
+objectClass: organizationalRole
+cn: {{ cn }}
+

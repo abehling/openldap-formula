@@ -1,0 +1,10 @@
+{%- from 'openldap/map.jinja' import openldap with context -%}
+{%- set domaindc = openldap.server.domain.suffix.split(',')[0] -%}
+{%- set domain = domaindc.split('=')[1] -%}
+
+dn: {{ openldap.server.domain.suffix }}
+objectClass: dcObject
+objectClass: organization
+dc: {{ domain }}
+o: {{ domain }}
+
