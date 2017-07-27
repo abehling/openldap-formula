@@ -1,0 +1,13 @@
+dn: {{ object.dn }}
+{%- for attribute in object %}
+{%- if attribute == 'dn' -%}
+{%- continue -%}
+{%- endif -%}
+{%- if object[attribute] is iterable and object[attribute] is not string %}
+{%- for list_object in object[attribute] %}
+{{ attribute }}: {{ list_object }}
+{%- endfor %}
+{%- else %}
+{{ attribute }}: {{ object[attribute] }}
+{%- endif -%}
+{%- endfor -%}
