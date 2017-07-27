@@ -12,6 +12,7 @@ client:
   uri: ldap://localhost
   base: "dc=example,dc=com"
 server:
+  slapdosconfig: /etc/sysconfig/slapd
   enabled: False
   protocols:
     ldap: True
@@ -45,6 +46,6 @@ server:
 #          attrs:
 #            attribute1: value
   certificate:
-    certfile: /etc/openldap/cert/cert.pem
-    keyfile: /etc/openldap/cert/cert-key.pem
+    certfile: /etc/openldap/certs/cert.pem
+    keyfile: /etc/openldap/certs/cert-key.pem
 

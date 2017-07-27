@@ -58,6 +58,18 @@ add-access-default-db:
 
 {% if openldap.server.protocols.ldaps %}
 
+osconfig-enable-ldaps:
+  file.replace:
+    - name: {{ openldap.server.slapdosconfig }}
+    - pattern: ^SLAPD_URLS.*$
+    - repl: SLAPD_URLS="ldapi:/// ldap:/// ldaps:///"
+
+service-slapd-restart:
+  cmd.wait:
+    - name: systemctl restart slapd
+    - watch:
+      - file: osconfig-enable-ldaps
+
 file-modify-certs:
   file.managed:
     - name: {{ openldap.general.ldifdir }}/modify_config_cert.ldif
