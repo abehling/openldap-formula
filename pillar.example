@@ -2,6 +2,8 @@ openldap:
   lookup:
     client:
       url: ldap://localhost
+      options:
+        TLS_CACERT: /etc/openldap/certs/cert.pem
     server:
       protocols:
         ldap: True
