@@ -1,3 +1,9 @@
 {%- from 'openldap/map.jinja' import openldap with context -%}
 URI     {{ openldap.client.uri }}
 BASE    {{ openldap.client.base }}
+
+{% if 'options' in openldap.client -%}
+{% for option in openldap.client.options -%}
+{{ option }}    {{ openldap.client.options[option] }}
+{% endfor -%}
+{% endif -%}
